@@ -4,7 +4,7 @@
       "id": "github",
       "name": "GitHub MCP Server",
       "description": "Official GitHub MCP server providing access to repositories, issues, pull requests, and more.",
-      "manifest_url": "https://api.githubcopilot.com/mcp/manifest.json"
+      "manifest_url": "https://api.githubcopilot.com/mcp/"
     }
   ]
 }
