@@ -337,9 +337,24 @@
                     }
                 }
             }
+        },
+        {
+            "name": "browserstack/browserstack-mcp-server",
+            "description": "Official Browserstack MCP Server that connects with Browserstack.",
+            "status": "active",
+            "version": "1.2.8",
+            "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+            "_meta": {
+                "io.modelcontextprotocol.registry/official": {
+                    "id": "ab12cd34-5678-90ef-1234-567890abcdyz",
+                    "is_latest": true,
+                    "published_at": "2025-08-22T00:00:00Z",
+                    "updated_at": "2025-08-22T00:00:00Z"
+                }
+            }
         }
     ],
     "metadata": {
-        "count": 5
+        "count": 6
     }
 }
