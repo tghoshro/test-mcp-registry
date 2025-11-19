@@ -398,10 +398,6 @@
         }
     ],
     "metadata": {
-        "count": 5,
-        "next_cursor": "0658e342-7ae7-493a-b378-a324363ee322",
-        "per_page": 5,
-        "total": 52,
-        "total_pages": 2
+        "count": 5
     }
 }
