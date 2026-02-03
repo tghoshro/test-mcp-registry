@@ -1,0 +1,37 @@
+name: Get OIDC Token
+on: workflow_dispatch # This allows you to run it manually with a button click
+
+# 1. PERMISSIONS: This is the most critical part. 
+# You must explicitly ask GitHub for the 'id-token' write permission.
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  fetch-token:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch and Decode OIDC Token
+        run: |
+          # A. Request the token from GitHub's internal runner API
+          # We use the environment variables GitHub provides automatically.
+          URL="$ACTIONS_ID_TOKEN_REQUEST_URL&audience=my-test-audience"
+          TOKEN=$ACTIONS_ID_TOKEN_REQUEST_TOKEN
+          
+          # B. Make the call using curl
+          RESPONSE=$(curl -s -H "Authorization: bearer $TOKEN" "$URL")
+          
+          # C. Extract the JWT value from the JSON response
+          # The response looks like {"value": "ey...", "count": 1}
+          JWT=$(echo $RESPONSE | jq -r '.value')
+          
+          echo "✅ OIDC Token successfully generated!"
+          
+          # D. PROOF: Let's decode the token so you can see what's inside.
+          # A JWT has 3 parts: Header.Payload.Signature
+          # We will split it and decode the Payload (the middle part).
+          PAYLOAD=$(echo $JWT | cut -d '.' -f 2 | base64 -d 2>/dev/null)
+          
+          echo "--- TOKEN PAYLOAD (CLAIMS) ---"
+          echo $PAYLOAD | jq .
+          echo "------------------------------"
