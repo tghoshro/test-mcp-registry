@@ -25,6 +25,6 @@ jobs:
           # so GitHub doesn't mistakenly hide it as a secret.
           echo "COPY THE TEXT BELOW (remove the spaces later):"
           echo ""
-          echo $JWT | sed 's/\./ . /g'
+          echo $JWT
           echo ""
           echo "=========================================="
