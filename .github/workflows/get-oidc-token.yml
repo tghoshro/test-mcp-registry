@@ -13,7 +13,7 @@ jobs:
         run: |
           # 1. Fetch the Token
           # We use a standard audience for AWS as an example, but it can be anything.
-          URL="$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com"
+          URL="$ACTIONS_ID_TOKEN_REQUEST_URL&audience=mcp-registry"
           TOKEN=$ACTIONS_ID_TOKEN_REQUEST_TOKEN
           RESPONSE=$(curl -s -H "Authorization: bearer $TOKEN" "$URL")
           JWT=$(echo $RESPONSE | jq -r '.value')
