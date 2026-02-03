@@ -1,37 +1,44 @@
-name: Get OIDC Token
-on: workflow_dispatch # This allows you to run it manually with a button click
+name: Get OIDC Token (Safe Version)
+on: workflow_dispatch
 
-# 1. PERMISSIONS: This is the most critical part. 
-# You must explicitly ask GitHub for the 'id-token' write permission.
 permissions:
-  id-token: write
+  id-token: write # REQUIRED: This allows the token generation
   contents: read
 
 jobs:
   fetch-token:
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch and Decode OIDC Token
+      - name: Fetch OIDC Token
         run: |
-          # A. Request the token from GitHub's internal runner API
-          # We use the environment variables GitHub provides automatically.
+          # 1. Verify we have the permission to request a token
+          if [ -z "$ACTIONS_ID_TOKEN_REQUEST_URL" ]; then
+             echo "❌ Error: ACTIONS_ID_TOKEN_REQUEST_URL is empty."
+             echo "   Check that 'permissions: id-token: write' is in your YAML."
+             exit 1
+          fi
+
+          # 2. Request the token
           URL="$ACTIONS_ID_TOKEN_REQUEST_URL&audience=my-test-audience"
           TOKEN=$ACTIONS_ID_TOKEN_REQUEST_TOKEN
           
-          # B. Make the call using curl
+          # We use curl to fetch the token
           RESPONSE=$(curl -s -H "Authorization: bearer $TOKEN" "$URL")
           
-          # C. Extract the JWT value from the JSON response
-          # The response looks like {"value": "ey...", "count": 1}
+          # 3. Extract just the value
           JWT=$(echo $RESPONSE | jq -r '.value')
           
-          echo "✅ OIDC Token successfully generated!"
-          
-          # D. PROOF: Let's decode the token so you can see what's inside.
-          # A JWT has 3 parts: Header.Payload.Signature
-          # We will split it and decode the Payload (the middle part).
-          PAYLOAD=$(echo $JWT | cut -d '.' -f 2 | base64 -d 2>/dev/null)
-          
-          echo "--- TOKEN PAYLOAD (CLAIMS) ---"
-          echo $PAYLOAD | jq .
-          echo "------------------------------"
+          # 4. Check if we actually got a token back
+          if [ "$JWT" = "null" ]; then
+             echo "❌ Error: Failed to get token. Response was:"
+             echo $RESPONSE
+             exit 1
+          else
+             echo "✅ SUCCESS! Token generated."
+             echo "Token Length: ${#JWT} characters"
+             echo "Ref: $GITHUB_REF"
+             
+             # OPTIONAL: Uncomment the line below to print the raw token to logs.
+             # WARNING: Only do this for testing! Never in a real project.
+             # echo "Raw Token: $JWT" 
+          fi
