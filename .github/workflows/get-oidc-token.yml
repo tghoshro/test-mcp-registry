@@ -1,4 +1,4 @@
-name: Print Split Token
+name: Print Full Visible Token
 on: workflow_dispatch
 
 permissions:
@@ -6,34 +6,32 @@ permissions:
   contents: read
 
 jobs:
-  debug-token:
+  reveal-token:
     runs-on: ubuntu-latest
     steps:
-      - name: Generate and Split Token
+      - name: Generate and Reveal Token
         run: |
-          # 1. Fetch Token
-          URL="$ACTIONS_ID_TOKEN_REQUEST_URL&audience=my-test-audience"
+          # 1. Fetch the Token
+          # We use a standard audience for AWS as an example, but it can be anything.
+          URL="$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com"
           TOKEN=$ACTIONS_ID_TOKEN_REQUEST_TOKEN
           RESPONSE=$(curl -s -H "Authorization: bearer $TOKEN" "$URL")
           JWT=$(echo $RESPONSE | jq -r '.value')
           
           echo "✅ Token Generated."
-          echo "I will now print the 3 parts of the token separately."
-          echo "To use this in jwt.io, paste Part 1, type a dot (.), paste Part 2, type a dot (.), paste Part 3."
-          echo "--------------------------------------------------"
+          echo "========================================================"
+          echo "FULL TOKEN (Copy the text below and remove spaces):"
+          echo "========================================================"
           
-          # 2. Split by '.' and print each part
-          # We use 'cut' to separate the string by the dots
-          PART1=$(echo $JWT | cut -d '.' -f 1)
-          PART2=$(echo $JWT | cut -d '.' -f 2)
-          PART3=$(echo $JWT | cut -d '.' -f 3)
+          # 2. Print with spaces to bypass masking
+          # This command inserts a space after every single character.
+          # Example: 'eyJ...' becomes 'e y J ...'
+          echo "$JWT" | sed 's/./& /g'
           
-          echo "PART 1 (Header):"
-          echo $PART1
           echo ""
-          echo "PART 2 (Payload):"
-          echo $PART2
-          echo ""
-          echo "PART 3 (Signature):"
-          echo $PART3
-          echo "--------------------------------------------------"
+          echo "========================================================"
+          echo "INSTRUCTIONS:"
+          echo "1. Copy the spaced text above."
+          echo "2. Paste it into a text editor."
+          echo "3. Remove all spaces (Find & Replace ' ' with '')."
+          echo "4. Paste the result into jwt.io."
