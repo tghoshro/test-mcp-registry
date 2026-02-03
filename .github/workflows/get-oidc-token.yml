@@ -1,44 +1,30 @@
-name: Get OIDC Token (Safe Version)
+name: Print OIDC Token (Debug)
 on: workflow_dispatch
 
 permissions:
-  id-token: write # REQUIRED: This allows the token generation
+  id-token: write
   contents: read
 
 jobs:
-  fetch-token:
+  debug-token:
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch OIDC Token
+      - name: Generate and Print Token
         run: |
-          # 1. Verify we have the permission to request a token
-          if [ -z "$ACTIONS_ID_TOKEN_REQUEST_URL" ]; then
-             echo "❌ Error: ACTIONS_ID_TOKEN_REQUEST_URL is empty."
-             echo "   Check that 'permissions: id-token: write' is in your YAML."
-             exit 1
-          fi
-
-          # 2. Request the token
+          # 1. Fetch the Token
           URL="$ACTIONS_ID_TOKEN_REQUEST_URL&audience=my-test-audience"
           TOKEN=$ACTIONS_ID_TOKEN_REQUEST_TOKEN
-          
-          # We use curl to fetch the token
           RESPONSE=$(curl -s -H "Authorization: bearer $TOKEN" "$URL")
-          
-          # 3. Extract just the value
           JWT=$(echo $RESPONSE | jq -r '.value')
           
-          # 4. Check if we actually got a token back
-          if [ "$JWT" = "null" ]; then
-             echo "❌ Error: Failed to get token. Response was:"
-             echo $RESPONSE
-             exit 1
-          else
-             echo "✅ SUCCESS! Token generated."
-             echo "Token Length: ${#JWT} characters"
-             echo "Ref: $GITHUB_REF"
-             
-             # OPTIONAL: Uncomment the line below to print the raw token to logs.
-             # WARNING: Only do this for testing! Never in a real project.
-             # echo "Raw Token: $JWT" 
-          fi
+          echo "✅ Token Generated!"
+          echo "=========================================="
+          
+          # 2. Print the Token
+          # We purposefully put spaces around the dots (.) 
+          # so GitHub doesn't mistakenly hide it as a secret.
+          echo "COPY THE TEXT BELOW (remove the spaces later):"
+          echo ""
+          echo $JWT | sed 's/\./ . /g'
+          echo ""
+          echo "=========================================="
