@@ -62,9 +62,171 @@
           "isLatest": true
         }
       }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "modelcontextprotocol/servers/brave-search",
+        "description": "Web search using Brave Search API with support for both web and local search.",
+        "title": "Brave Search",
+        "repository": {
+          "url": "https://github.com/modelcontextprotocol/servers",
+          "source": "github"
+        },
+        "version": "1.0.0",
+        "packages": [
+          {
+            "transport": {
+              "type": "stdio"
+            },
+            "registryType": "npm",
+            "identifier": "@modelcontextprotocol/server-brave-search",
+            "version": "0.6.2",
+            "runtimeHint": "node",
+            "environmentVariables": [
+              {
+                "name": "BRAVE_API_KEY",
+                "description": "API key for Brave Search API",
+                "format": "string",
+                "isRequired": true,
+                "isSecret": true
+              }
+            ]
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "publishedAt": "2026-04-09T12:10:00.000000Z",
+          "updatedAt": "2026-04-09T12:10:00.000000Z",
+          "isLatest": true
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "modelcontextprotocol/servers/postgres",
+        "description": "Connect to and query PostgreSQL databases with AI assistance.",
+        "title": "PostgreSQL",
+        "repository": {
+          "url": "https://github.com/modelcontextprotocol/servers",
+          "source": "github"
+        },
+        "version": "1.0.0",
+        "packages": [
+          {
+            "transport": {
+              "type": "stdio"
+            },
+            "registryType": "npm",
+            "identifier": "@modelcontextprotocol/server-postgres",
+            "version": "0.6.2",
+            "runtimeHint": "node",
+            "environmentVariables": [
+              {
+                "name": "POSTGRES_CONNECTION_STRING",
+                "description": "PostgreSQL connection string",
+                "format": "string",
+                "isRequired": true,
+                "isSecret": true
+              }
+            ]
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "publishedAt": "2026-04-09T12:10:00.000000Z",
+          "updatedAt": "2026-04-09T12:10:00.000000Z",
+          "isLatest": true
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "modelcontextprotocol/servers/filesystem",
+        "description": "Secure file system operations with configurable access controls.",
+        "title": "Filesystem",
+        "repository": {
+          "url": "https://github.com/modelcontextprotocol/servers",
+          "source": "github"
+        },
+        "version": "1.0.0",
+        "packages": [
+          {
+            "transport": {
+              "type": "stdio"
+            },
+            "registryType": "npm",
+            "identifier": "@modelcontextprotocol/server-filesystem",
+            "version": "0.6.2",
+            "runtimeHint": "node"
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "publishedAt": "2026-04-09T12:10:00.000000Z",
+          "updatedAt": "2026-04-09T12:10:00.000000Z",
+          "isLatest": true
+        }
+      }
+    },
+    {
+      "server": {
+        "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+        "name": "modelcontextprotocol/servers/slack",
+        "description": "Interact with Slack workspaces - send messages, read channels, and manage conversations.",
+        "title": "Slack",
+        "repository": {
+          "url": "https://github.com/modelcontextprotocol/servers",
+          "source": "github"
+        },
+        "version": "1.0.0",
+        "packages": [
+          {
+            "transport": {
+              "type": "stdio"
+            },
+            "registryType": "npm",
+            "identifier": "@modelcontextprotocol/server-slack",
+            "version": "0.6.2",
+            "runtimeHint": "node",
+            "environmentVariables": [
+              {
+                "name": "SLACK_BOT_TOKEN",
+                "description": "Slack Bot User OAuth Token",
+                "format": "string",
+                "isRequired": true,
+                "isSecret": true
+              },
+              {
+                "name": "SLACK_TEAM_ID",
+                "description": "Slack Team ID",
+                "format": "string",
+                "isRequired": true,
+                "isSecret": false
+              }
+            ]
+          }
+        ]
+      },
+      "_meta": {
+        "io.modelcontextprotocol.registry/official": {
+          "status": "active",
+          "publishedAt": "2026-04-09T12:10:00.000000Z",
+          "updatedAt": "2026-04-09T12:10:00.000000Z",
+          "isLatest": true
+        }
+      }
     }
   ],
   "metadata": {
-    "count": 2
+    "count": 6
   }
 }
